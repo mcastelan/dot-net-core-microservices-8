@@ -28,21 +28,10 @@ builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title
 //Register AutoMapper
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
-////Register Mediatr
-///
-//var assemblies = new Assembly[]
-//{
-//    Assembly.GetExecutingAssembly(),
-//    typeof(GetAllBrandsHandler).Assembly
-//};
-//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
+
 ApplicationServicesRegister.AddApplicationServices(builder.Services);
 
-//Register Application Services
-//builder.Services.AddScoped<ICatalogContext, CatalogContext>();
-//builder.Services.AddScoped<IProductRepository, ProductRepository>();
-//builder.Services.AddScoped<IBrandRepository, ProductRepository>();
-//builder.Services.AddScoped<ITypesRepository, ProductRepository>();
+
 InfrastructureServiceRegister.AddInfrastructureServices(builder.Services);
 
 var app = builder.Build();
