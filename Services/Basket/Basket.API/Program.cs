@@ -26,7 +26,7 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 
 InfrastructureServiceRegister.AddInfrastructureServices(builder.Services, builder.Configuration.GetValue<string>("CacheSettings:ConnectionString"));
-ApplicationServicesRegister.AddApplicationServices(builder.Services);
+ApplicationServicesRegister.AddApplicationServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
 

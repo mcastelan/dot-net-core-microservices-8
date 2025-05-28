@@ -1,4 +1,5 @@
 ﻿using Basket.Application.Commands;
+using Basket.Application.GrpcService;
 using Basket.Application.Queries;
 using Basket.Application.Responses;
 using MediatR;
@@ -12,9 +13,12 @@ namespace Basket.API.Controllers
     public class BasketController : ApiController
     {
         public readonly IMediator _mediator;
+       // private readonly DiscountGrpcService _discountGrpcService;
+
         public BasketController(IMediator mediator)
         {
             _mediator = mediator;
+            
         }
 
         [HttpGet]
@@ -31,6 +35,7 @@ namespace Basket.API.Controllers
         [ProducesResponseType(typeof(ShoppingCartResponse), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<ShoppingCartResponse>> UpdateBasket([FromBody] CreateShoppingCartCommand createShoppingCartCommand)
         {
+          
             var basket = await _mediator.Send(createShoppingCartCommand);
             return Ok(basket);
         }
@@ -43,5 +48,7 @@ namespace Basket.API.Controllers
             var cmd = new DeleteBasketByUserNameCommand(userName);
             return Ok(await _mediator.Send(cmd));
         }
+
+
     }
 }

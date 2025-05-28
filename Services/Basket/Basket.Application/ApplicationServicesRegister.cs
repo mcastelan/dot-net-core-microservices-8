@@ -1,4 +1,7 @@
-﻿using Basket.Application.Handlers;
+﻿using Basket.Application.GrpcService;
+using Basket.Application.Handlers;
+using Discount.Grpc.Protos;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -11,7 +14,7 @@ namespace Basket.Application
 {
     public static class ApplicationServicesRegister
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             //Register Mediatr
             var assemblies = new Assembly[]
@@ -21,6 +24,8 @@ namespace Basket.Application
             };
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
 
+            services.AddScoped<DiscountGrpcService>();
+            services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(cfg => cfg.Address = new Uri(configuration["GrpcSettings:DiscountUrl"]));
             return services;
         }
     }
