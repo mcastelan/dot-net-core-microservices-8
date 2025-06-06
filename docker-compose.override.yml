@@ -6,6 +6,7 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+
   basketdb:
     container_name: basketdb
     restart: always
@@ -30,7 +31,20 @@ services:
       timeout: 5s
       retries: 5
 
-
+  orderdb:
+    container_name: orderdb
+    environment:
+        SA_PASSWORD: "Mcastelan1234567"
+        ACCEPT_EULA: "Y"
+    restart: always
+    ports:
+       - "1433:1433"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'Mcastelan1234567' -Q 'select 1'"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+    
   catalog.api:
     container_name: catalog.api
     environment:
@@ -66,7 +80,19 @@ services:
          condition: service_healthy
     ports:
       - "8002:8080"
- 
+  
+  ordering.api:
+    container_name: ordering.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings__OrderingConnectionString=Server=orderdb; Database=OrderDb; User Id=sa; Password=Mcastelan1234567 ;TrustServerCertificate=True" 
+    depends_on:
+      - orderdb
+    ports:
+      - "8003:8080"
+    command: >
+      /bin/sh -c "dotnet ef database update -p ../Ordering.Infrastructure -s ../Ordering.API && dotnet Ordering.API.dll"
+       
   pgadmin:
     container_name: pgadmin
     environment:
@@ -90,3 +116,7 @@ services:
       - portainer_data:/data   
  
  
+
+ 
+    
+    
