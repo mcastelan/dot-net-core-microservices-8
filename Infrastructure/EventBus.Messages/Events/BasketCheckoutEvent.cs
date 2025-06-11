@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventBus.Messages.Events
 {
-    public class BasketChecoutEvent:BaseIntegrationEvent
+    public class BasketCheckoutEvent:BaseIntegrationEvent
     {
         public string? UserName { get; set; }
         public decimal? TotalPrice { get; set; }

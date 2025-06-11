@@ -4,17 +4,17 @@ namespace EventBus.Messages.Events;
 
 public class BaseIntegrationEvent
 {
-    public string CorelationId { get; set; }
+    public string CorrelationId { get; set; }
     public DateTime CreationDate { get; private set; }
 
     public BaseIntegrationEvent()
     {
-        CorelationId = Guid.NewGuid().ToString();
+        CorrelationId = Guid.NewGuid().ToString();
         CreationDate = DateTime.Now;
     }
     public BaseIntegrationEvent(Guid corelationId, DateTime creationDate)
     {
-        CorelationId = corelationId.ToString();
+        CorrelationId = corelationId.ToString();
         CreationDate= creationDate;
     }
 }

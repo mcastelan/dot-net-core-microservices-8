@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using Basket.Application;
 using Basket.Infrastructure;
+using MassTransit;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,8 +26,17 @@ builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 
-InfrastructureServiceRegister.AddInfrastructureServices(builder.Services, builder.Configuration.GetValue<string>("CacheSettings:ConnectionString"));
-ApplicationServicesRegister.AddApplicationServices(builder.Services, builder.Configuration);
+builder.Services.AddInfrastructureServices(builder.Configuration.GetValue<string>("CacheSettings:ConnectionString"));
+builder.Services.AddApplicationServices( builder.Configuration);
+builder.Services.AddMassTransit(config =>
+{
+    config.UsingRabbitMq((ct, cfg) => {
+        cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+      
+        //cfg.ConfigureEndpoints(ct);
+    });
+});
+//builder.Services.AddMassTransitHostedService();
 
 var app = builder.Build();
 

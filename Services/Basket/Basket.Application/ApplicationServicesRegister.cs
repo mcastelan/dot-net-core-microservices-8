@@ -26,6 +26,7 @@ namespace Basket.Application
 
             services.AddScoped<DiscountGrpcService>();
             services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(cfg => cfg.Address = new Uri(configuration["GrpcSettings:DiscountUrl"]));
+           
             return services;
         }
     }
