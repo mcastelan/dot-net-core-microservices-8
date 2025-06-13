@@ -3,6 +3,8 @@ using Discount.Core.Repositories;
 using Discount.Grpc.Protos;
 using Grpc.Core;
 using MediatR;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +16,12 @@ namespace Discount.Application.Handlers
     public class GetDiscountQueryHandler : IRequestHandler<GetDiscountQuery, CouponModel>
     {
         private readonly IDiscountRepository _discountRepository;
+        private readonly ILogger<GetDiscountQueryHandler> _logger;
 
-        public GetDiscountQueryHandler(IDiscountRepository discountRepository)
+        public GetDiscountQueryHandler(IDiscountRepository discountRepository,ILogger<GetDiscountQueryHandler> logger)
         {
             _discountRepository = discountRepository;
+            _logger = logger;
         }
         public async Task<CouponModel> Handle(GetDiscountQuery request, CancellationToken cancellationToken)
         {
@@ -33,6 +37,7 @@ namespace Discount.Application.Handlers
                 Description = coupon.Description,
                 ProductName = coupon.ProductName
             };
+            _logger.LogInformation($"Coupon for the {request.ProductName} is fetched");
             return couponModel;
         }
     }

@@ -5,12 +5,17 @@ using Catalog.Core.Repositories;
 using Catalog.Infrastructure;
 using Catalog.Infrastructure.Data;
 using Catalog.Infrastructure.Repositories;
+using Common.Logging;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//Serilog configuration
+builder.Host.UseSerilog(Logging.ConfigureLogger);
 
 // Add API Versioning
 builder.Services.AddApiVersioning(options =>

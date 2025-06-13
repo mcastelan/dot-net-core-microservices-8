@@ -1,6 +1,7 @@
 ﻿using Catalog.Application.Commands;
 using Catalog.Application.Queries;
 using Catalog.Application.Responses;
+using Catalog.Core.Entities;
 using Catalog.Core.Specs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,12 @@ namespace Catalog.API.Controllers
     public class CatalogController : ApiController
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<CatalogController> _logger;
 
-        public CatalogController(IMediator mediator)
+        public CatalogController(IMediator mediator,ILogger<CatalogController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -36,6 +39,7 @@ namespace Catalog.API.Controllers
         {
             var query = new GetProductByNameQuery(productName);
             var result = await _mediator.Send(query);
+            _logger.LogInformation($"Product with {productName} fetched");
             return Ok(result);
         }
 
@@ -76,6 +80,7 @@ namespace Catalog.API.Controllers
         {
             var query = new GetProductByBrandQuery(brand);
             var result = await _mediator.Send(query);
+           
             return Ok(result);
         }
         [HttpPost]

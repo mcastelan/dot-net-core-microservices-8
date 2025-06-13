@@ -1,8 +1,10 @@
 using Asp.Versioning;
 using Basket.Application;
 using Basket.Infrastructure;
+using Common.Logging;
 using MassTransit;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,9 @@ builder.Services.AddApiVersioning(options =>
 
 
 // Add services to the container.
+
+//Serilog configuration
+builder.Host.UseSerilog(Logging.ConfigureLogger);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
