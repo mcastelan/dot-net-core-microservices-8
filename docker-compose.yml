@@ -45,6 +45,12 @@ services:
       context: .
       dockerfile: Services/Ordering/Ordering.API/Dockerfile
 
+  ocelot.apigateway:
+    image: ${DOCKER_REGISTRY-}ocelotapigw
+    build:
+      context: .
+      dockerfile: ApiGateways/Ocelot.GatewaySolution/Dockerfile
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
 

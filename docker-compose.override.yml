@@ -42,7 +42,7 @@ services:
     volumes:
        - orderdb-data:/var/opt/mssql
     healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'Mcastelan1234567' -Q 'select 1'"]
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Mcastelan1234567' -Q 'select 1' -C"]     
       interval: 10s
       timeout: 10s
       retries: 3
@@ -131,6 +131,17 @@ services:
       - "8003:8080"
     command: >
       /bin/sh -c "dotnet ef database update -p ../Ordering.Infrastructure -s ../Ordering.API && dotnet Ordering.API.dll"
+
+  ocelot.apigateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development        
+    depends_on:
+      - catalog.api
+      - basket.api
+      - discount.api
+      - ordering.api
+    ports:
+      - "8010:8080" 
        
   elasticsearch:
     container_name: elasticsearch
