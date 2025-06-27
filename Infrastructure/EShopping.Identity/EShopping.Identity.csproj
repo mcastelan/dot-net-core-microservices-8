@@ -4,12 +4,17 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<UserSecretsId>699ecf00-f468-4636-bca1-25f27bf94a19</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>..\..</DockerfileContext>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Duende.IdentityServer" Version="7.2.4" />
 
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.3" />
+
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
 		<PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
 	</ItemGroup>
 

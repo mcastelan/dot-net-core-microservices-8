@@ -23,7 +23,7 @@ namespace EShopping.Identity
             {
                 new ApiResource("Catalog", "Catalog.API")
                 {
-                    Scopes = {  "basketapi" }
+                    Scopes = {  "catalogapi" }
                 },
                  new ApiResource("Basket", "Basket.API")
                 {

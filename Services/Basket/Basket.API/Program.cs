@@ -6,9 +6,11 @@ using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,23 +76,34 @@ builder.Services.AddMassTransit(config =>
 });
 
 //Identity server Changes
-//var userPolicy = new AuthorizationPolicyBuilder()
-//    .RequireAuthenticatedUser()
-//    .Build();
 
-//builder.Services.AddControllers(config => {
-//    config.Filters.Add(new AuthorizeFilter(userPolicy));
-//});
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+               .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+               {
+                   options.RequireHttpsMetadata = false; // Set to true in production
+                   options.Authority = "https://localhost:8009/";
+                   options.Audience = "Basket"; // API resource name
+                   //options.TokenValidationParameters = new TokenValidationParameters
+                   //{
+                   //    //ValidateIssuer = false
 
+                   //    ValidateIssuer = true,
+                   //    ValidIssuer = "http://localhost:8009",
+                   //    RequireExpirationTime = false,
+                   //    ValidateIssuerSigningKey = true,
+                   //    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("abcdefghi12345"))
+                   //};
 
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        options.Authority = "https://localhost:8009"; // Identity Server URL
-//        options.Audience = "Basket"; // API resource name
-        
-//    });
+               });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ApiScope", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "basketapi");
+    });
+});
 
 
 var app = builder.Build();
@@ -107,7 +120,7 @@ if (app.Environment.IsDevelopment())
 }
 
 
-//app.UseAuthentication();
+app.UseAuthentication();
 
 app.UseAuthorization();
 

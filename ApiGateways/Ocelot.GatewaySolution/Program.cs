@@ -15,28 +15,32 @@ builder.Services.AddCors(options =>
         policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
     });
 });
+
 //ocelot configuration
 builder.Host.ConfigureAppConfiguration((env, config) =>
 {
     config.AddJsonFile($"ocelot.{env.HostingEnvironment.EnvironmentName}.json", true, true);
 });
+
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
 
-
-
 //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        options.Authority = "https://localhost:8009"; // Identity Server URL
-//        //options.Audience = "Catalog"; // API resource name
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
-//            ValidateAudience = true
-//        };
-//    });
+//             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+//             {
+
+//                 options.Authority = "https://localhost:8009/";
+//                 options.TokenValidationParameters = new TokenValidationParameters
+//                 {
+//                     ValidateAudience = false
+//                 };
+
+//             });
+
+
 
 builder.Services.AddOcelot();
 

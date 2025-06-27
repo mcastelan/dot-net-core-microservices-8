@@ -50,6 +50,12 @@ services:
     build:
       context: .
       dockerfile: ApiGateways/Ocelot.GatewaySolution/Dockerfile
+  
+  # eshopping.identity:
+  #   image: ${DOCKER_REGISTRY-}eshoppingidentity
+  #   build:
+  #     context: .
+  #     dockerfile: Infrastructure/EShopping.Identity/Dockerfile
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3

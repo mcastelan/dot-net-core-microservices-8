@@ -6,6 +6,7 @@ using Basket.Core.Entities;
 using EventBus.Messages.Events;
 using MassTransit;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -14,6 +15,7 @@ namespace Basket.API.Controllers.V2
     [ApiVersion("2")]
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
+    [Authorize]
     public class BasketController : ControllerBase
     {
         public readonly IMediator _mediator;
